@@ -16,9 +16,6 @@ using namespace std;
 
 int main(int argc,char *argv[])
 {
-    double time = omp_get_wtime();
-    ofstream rslt;
-    rslt.open ("result.txt");   
     double *a = new double [(M+1)*(N+1)]();
     double *b = new double [(M+1)*(N+1)]();
     double *F = new double [(M+1)*(N+1)]();
@@ -27,9 +24,9 @@ int main(int argc,char *argv[])
     double x1=-1, x2=1, y1=-0.5, y2=0.5;   // границы фиктивной области
     double h1=(x2-x1)/M, h2=(y2-y1)/N;     // шаги сетки по x и по y
     double eps=h1*h2;
-    cout << "M = " << M << endl;
-    clock_t start, end;
     omp_set_num_threads(atoi(argv[1]));
+    
+    double time = omp_get_wtime();
 
     // вычисление коэффициентов a_ij
     #pragma omp parallel for shared(a,x1,h1,y1,h2,eps)  //private(i,j,x,el,ya,yb,l)
@@ -57,7 +54,7 @@ int main(int argc,char *argv[])
             a(i,j) = l+(1-l)/eps;
         }
     }
-    printf("%g %g \n", a[20 * 41 + 20], a(20, 40));
+
     // вычисление коэффициентов b_ij
     #pragma omp parallel for shared(b,x1,h1,y1,h2,eps)
     for (int j=1; j<=N; j++)
@@ -144,14 +141,13 @@ int main(int argc,char *argv[])
 
         if (dwmax<1e-10) break;    // выход из цикла итераций Якоби при достижении точности
     }
-
-    rslt << dwmax << " " << it << endl;
+    
     cout << "MY TIME OF PROG = " << omp_get_wtime() - time << endl;
-    printf("It=%i ||dw||=%g\n", it, dwmax);
+    cout << "It = " << it << ", dw = " << dwmax << endl;
 
     // вывод решения в файл
-    //ofstream rslt;
-    //rslt.open ("result.txt");
+    ofstream rslt;
+    rslt.open ("result.txt");
     for (int j=0; j<=N; j++)
     {
         rslt << w(0,j);
