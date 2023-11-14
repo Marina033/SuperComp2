@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <math.h>
-#include <time.h>
 #include <omp.h>
 #include <cstdlib>
 #include <cmath>
@@ -30,9 +29,7 @@ int main(int argc,char *argv[])
     double eps=h1*h2;
     cout << "M = " << M << endl;
     clock_t start, end;
-    start = clock();
-    int threadsNum=2;
-    omp_set_num_threads(threadsNum);
+    omp_set_num_threads(atoi(argv[1]));
 
     // вычисление коэффициентов a_ij
     #pragma omp parallel for shared(a,x1,h1,y1,h2,eps)  //private(i,j,x,el,ya,yb,l)
@@ -61,7 +58,7 @@ int main(int argc,char *argv[])
         }
     }
     printf("%g %g \n", a[20 * 41 + 20], a(20, 40));
-    // вычисление коэффициентов a_ij
+    // вычисление коэффициентов b_ij
     #pragma omp parallel for shared(b,x1,h1,y1,h2,eps)
     for (int j=1; j<=N; j++)
     {
@@ -114,7 +111,7 @@ int main(int argc,char *argv[])
     // итерации Якоби
     int it=0;
     double dwmax=0;
-    for (it=0;it<100000; it++)
+    for (it=0;it<1000000; it++)
     {
         // вычисление вектора
         // r_ij = F_ij - A_{i+1,j} w_{i+1,j} - A_{i-1,j} w_{i-1,j} - A_{i,j+1} w_{i,j+1} - A_{i,j-1} w_{i,j-1}
@@ -148,11 +145,9 @@ int main(int argc,char *argv[])
         if (dwmax<1e-10) break;    // выход из цикла итераций Якоби при достижении точности
     }
 
-    end = clock();
     rslt << dwmax << " " << it << endl;
-
+    cout << "MY TIME OF PROG = " << omp_get_wtime() - time << endl;
     printf("It=%i ||dw||=%g\n", it, dwmax);
-    cout << ((double) (end - start)) / CLOCKS_PER_SEC << endl;
 
     // вывод решения в файл
     //ofstream rslt;
@@ -171,5 +166,4 @@ int main(int argc,char *argv[])
     delete[] F;
     delete[] w;
     delete[] r;
-    cout << "MY TIME OF PROG" << omp_get_wtime() - time << endl;
 }
