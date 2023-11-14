@@ -3,19 +3,23 @@
 #include <math.h>
 #include <time.h>
 #include <omp.h>
+#include <cstdlib>
+#include <cmath>
 using namespace std;  
 
-#define N 40
-#define M 40
+#define N 80
+#define M 80
 #define a(i,j) a[(i)*(N+1)+j]
 #define b(i,j) b[(i)*(N+1)+j]
 #define w(i,j) w[(i)*(N+1)+j]
 #define F(i,j) F[(i)*(N+1)+j]
 #define r(i,j) r[(i)*(N+1)+j]
 
-main(int argc,char *argv[])
+int main(int argc,char *argv[])
 {
-
+    double time = omp_get_wtime();
+    ofstream rslt;
+    rslt.open ("result.txt");   
     double *a = new double [(M+1)*(N+1)]();
     double *b = new double [(M+1)*(N+1)]();
     double *F = new double [(M+1)*(N+1)]();
@@ -24,10 +28,10 @@ main(int argc,char *argv[])
     double x1=-1, x2=1, y1=-0.5, y2=0.5;   // границы фиктивной области
     double h1=(x2-x1)/M, h2=(y2-y1)/N;     // шаги сетки по x и по y
     double eps=h1*h2;
-    
+    cout << "M = " << M << endl;
     clock_t start, end;
     start = clock();
-    int threadsNum=8;
+    int threadsNum=16;
     omp_set_num_threads(threadsNum);
 
     // вычисление коэффициентов a_ij
@@ -56,7 +60,7 @@ main(int argc,char *argv[])
             a(i,j) = l+(1-l)/eps;
         }
     }
-
+    printf("%g %g \n", a[20 * 41 + 20], a(20, 40));
     // вычисление коэффициентов a_ij
     #pragma omp parallel for shared(b,x1,h1,y1,h2,eps)
     for (int j=1; j<=N; j++)
@@ -145,13 +149,14 @@ main(int argc,char *argv[])
     }
 
     end = clock();
+    rslt << dwmax << " " << it << endl;
 
     printf("It=%i ||dw||=%g\n", it, dwmax);
     cout << ((double) (end - start)) / CLOCKS_PER_SEC << endl;
 
     // вывод решения в файл
-    ofstream rslt;
-    rslt.open ("result.txt");
+    //ofstream rslt;
+    //rslt.open ("result.txt");
     for (int j=0; j<=N; j++)
     {
         rslt << w(0,j);
@@ -159,11 +164,12 @@ main(int argc,char *argv[])
             rslt << ",\t" << w(i,j);
         rslt << endl;
     }
+	
     rslt.close();
-
-    delete a;
-    delete b;
-    delete F;
-    delete w;
-    delete r;
+    delete[] a;
+    delete[] b;
+    delete[] F;
+    delete[] w;
+    delete[] r;
+    cout << "MY TIME OF PROG" << omp_get_wtime() - time << endl;
 }
