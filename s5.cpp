@@ -31,7 +31,7 @@ int main(int argc,char *argv[])
     cout << "M = " << M << endl;
     clock_t start, end;
     start = clock();
-    int threadsNum=16;
+    int threadsNum=2;
     omp_set_num_threads(threadsNum);
 
     // вычисление коэффициентов a_ij
