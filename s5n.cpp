@@ -150,7 +150,7 @@ int main(int argc,char *argv[])
     
     cout << "MY TIME OF PROG = " << omp_get_wtime() - time << endl;
     cout << "It = " << it << ", dw = " << dwmax << endl;
-
+    cout << "Number of thread used = " << omp_get_max_threads() << endl;
     // вывод решения в файл
     ofstream rslt;
     rslt.open ("result.txt");
