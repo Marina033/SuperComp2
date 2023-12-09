@@ -8,8 +8,8 @@
 #include <cstring>
 using namespace std;  
 
-#define N 320
-#define M 320
+#define N 80
+#define M 80
 #define a(i,j) a[(i)*(N+1)+j]
 #define b(i,j) b[(i)*(N+1)+j]
 #define w(i,j) w[(i)*(N+1)+j]
@@ -59,8 +59,7 @@ int main(int argc,char *argv[])
 		w1 = new double [(M+1)*(N+1)]();
 	}
 	
-    //int nthr=atoi(argv[1]);
-    nthr=4;
+    int nthr=atoi(argv[1]);
     omp_set_num_threads(nthr);
     double *dwthr = new double [nthr]();
     
@@ -278,7 +277,7 @@ int main(int argc,char *argv[])
 	
     if (pid==0)
 	{
-		cout << "MY TIME OF PROG = " << omp_get_wtime() - time << endl;
+		//cout << "MY TIME OF PROG = " << omp_get_wtime() - time << endl;
 		cout << "It = " << it << ", dw = " << dwmax << endl;
 		endtime   = MPI_Wtime();
 		printf("Mpi Time %f seconds\n",endtime-starttime);
