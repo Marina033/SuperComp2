@@ -283,13 +283,6 @@ int main(int argc,char *argv[])
 		printf("Mpi Time %f seconds\n",endtime-starttime);
 	}
 	
-	//cout <<"t0 "<< t0 << ' ' << pid << endl;
-	//cout <<"t1 "<< t1 << ' ' << pid << endl;
-	//cout <<"t2 "<< t2 << ' ' << pid << endl;
-	//cout <<"t3 "<< t3 << ' ' << pid << endl;
-	//cout <<"t4 "<< t4 << ' ' << pid << endl;
-	//cout <<"t5 "<< t5 << ' ' << pid << endl;
-	//if (pid==0) cout << "trecv "<< trecv  << endl;
 	
     delete[] a;
     delete[] b;
