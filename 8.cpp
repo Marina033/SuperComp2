@@ -240,7 +240,6 @@ int main(int argc,char *argv[])
 		if (pid==0) {
 			dwmax=0;
 			for (int i=0; i<nthr; i++) dwmax=max(dwmax,dwthr[i]); // максимум изменения w по потокам
-			if (it%10000==0) cout << "It = " << it << ", dw = " << dwmax << endl;
 		}
 		
         MPI_Bcast(w, (M+1)*(N+1), MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD);
