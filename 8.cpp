@@ -277,7 +277,7 @@ int main(int argc,char *argv[])
 		endtime   = MPI_Wtime();
 		cout << "real 0m" << endtime-starttime << "s" << endl;
 		cout << "user 0m" << endtime-starttime << "s" << endl;
-		cour << "sys 0m" << endtime-starttime << "s" << endl;
+		cout << "sys 0m" << endtime-starttime << "s" << endl;
 	}
 	
 	
