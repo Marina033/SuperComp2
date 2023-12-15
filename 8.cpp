@@ -45,29 +45,27 @@ int main(int argc,char *argv[])
     MPI_Comm_rank( MPI_COMM_WORLD, &pid );
 
     int K=subdiv(nproc, M, N);
-
+    int nthr=atoi(argv[1]);
+    omp_set_num_threads(nthr);
+    double *dwthr = new double [nthr]();
 	if (pid==0)
 	{
-		cout << "K "<<K << endl;
+		
 		for (int k=0; k<K; k++)
 		{
-			cout << ix1[k] << ' ';
-			cout << ix2[k] << ' ';
-			cout << jy1[k] << ' ';
-			cout << jy2[k] << endl;
+			cout << "M = " << M << endl;
+			cout << "threads = " << nthr << endl;
 		}
 		w1 = new double [(M+1)*(N+1)]();
 	}
 	
-    int nthr=atoi(argv[1]);
-    omp_set_num_threads(nthr);
-    double *dwthr = new double [nthr]();
+   
     
 	double starttime, endtime;
     starttime = MPI_Wtime();
     double time = omp_get_wtime();
     nthr=omp_get_max_threads();
-	cout << "number of threads=" << nthr << endl;
+	
 	
     // вычисление коэффициентов a_ij
     #pragma omp parallel for shared(a,x1,h1,y1,h2,eps)  //private(i,j,x,el,ya,yb,l)
@@ -277,10 +275,10 @@ int main(int argc,char *argv[])
 	
     if (pid==0)
 	{
-		//cout << "MY TIME OF PROG = " << omp_get_wtime() - time << endl;
-		cout << "It = " << it << ", dw = " << dwmax << endl;
 		endtime   = MPI_Wtime();
-		printf("Mpi Time %f seconds\n",endtime-starttime);
+		cout << "real 0m" << endtime-starttime << "s" << endl;
+		cout << "user 0m" << endtime-starttime << "s" << endl;
+		cour << "sys 0m" << endtime-starttime << "s" << endl;
 	}
 	
 	
