@@ -52,7 +52,7 @@ int main(int argc,char *argv[])
         if (pid==0)
         {
 
-                for (int k=0; k<K; k++)
+                for (int k=0; k<1; k++)
                 {
                         cout << "M = " << M << endl;
                         cout << "threads = " << nthr << endl;
