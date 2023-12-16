@@ -57,6 +57,7 @@ int main(int argc,char *argv[])
                 {
                         cout << "M = " << M << endl;
                         cout << "threads = " << nthr << endl;
+                        cout << endl;
                 }
                 w1 = new double [(M+1)*(N+1)]();
         }
@@ -276,7 +277,9 @@ int main(int argc,char *argv[])
     if (pid==0)
         {
                 endtime   = MPI_Wtime();
-                cout << "time = " << endtime-starttime << endl;
+                cout << "real 0m" << endtime-starttime << "s" << endl;
+                cout << "user 0m" << endtime-starttime << "s" << endl;
+                cout << "sys 0m" << endtime-starttime << "s" << endl;
         }
 
 
