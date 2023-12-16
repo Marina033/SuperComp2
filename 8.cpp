@@ -48,7 +48,8 @@ int main(int argc,char *argv[])
     int nthr=atoi(argv[1]);
     omp_set_num_threads(nthr);
     double *dwthr = new double [nthr]();
-
+    double starttime, endtime;
+    starttime = MPI_Wtime();
         if (pid==0)
         {
 
@@ -275,9 +276,7 @@ int main(int argc,char *argv[])
     if (pid==0)
         {
                 endtime   = MPI_Wtime();
-                cout << "real 0m" << endtime-starttime << "s" << endl;
-                cout << "user 0m" << endtime-starttime << "s" << endl;
-                cout << "sys 0m" << endtime-starttime << "s" << endl;
+                cout << "time = " << endtime-starttime << endl;
         }
 
 
