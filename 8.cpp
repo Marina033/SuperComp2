@@ -52,7 +52,7 @@ int main(int argc,char *argv[])
     starttime = MPI_Wtime();
         if (pid==0)
         {
-
+                cout << "число процессов = " << k << endl;
                 for (int k=0; k<1; k++)
                 {
                         cout << "M = " << M << endl;
